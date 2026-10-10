@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "553276925491",
+    "project_id": "rafiq-aldawa",
+    "storage_bucket": "rafiq-aldawa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553276925491:android:a7aeae15f8b3a3153fe546",
+        "android_client_info": {
+          "package_name": "com.rafiqaldawa.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5aFdXz5DPhtyecftvXkInKDXXxX06UjA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

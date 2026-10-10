@@ -1,0 +1,39 @@
+{
+  "appId": "com.rafiqaldawa.app",
+  "appName": "رفيق الدواء",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
+    },
+    "Haptics": {
+      "impactStyle": "Medium"
+    },
+    "Camera": {
+      "allowEditing": true,
+      "permissions": [
+        "camera",
+        "photos"
+      ]
+    },
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#0F172A",
+      "showSpinner": false
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon",
+      "iconColor": "#0D9488"
+    }
+  }
+}

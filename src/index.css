@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light identity: Teal primary + Indigo accent (P3 redesign) */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 180 84% 35%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 239 84% 67%;
+    --accent-foreground: 0 0% 100%;
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --alert: 0 84% 60%;
+    --alert-foreground: 0 0% 100%;
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 180 84% 35%;
+    --radius: 1rem;
+    --font-heading: "Inter", "Cairo", ui-sans-serif, system-ui, sans-serif;
+    --font-body: "Inter", "Cairo", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Inter", "Cairo", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    /* P3 gradients */
+    --gradient-header: linear-gradient(135deg, #14B8A6 0%, #0EA5A4 100%);
+    --gradient-fab: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  }
+
+  .dark {
+    /* Dark identity: Teal 300 primary + Indigo 400 accent on deep navy */
+    --background: 220 49% 8%;
+    --foreground: 210 40% 96%;
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 96%;
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 172 66% 50%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 13%;
+    --secondary-foreground: 210 40% 96%;
+    --muted: 217 33% 13%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 234 89% 74%;
+    --accent-foreground: 222 47% 11%;
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 11%;
+    --alert: 0 84% 60%;
+    --alert-foreground: 0 0% 100%;
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 25% 27%;
+    --input: 215 25% 27%;
+    --ring: 172 66% 50%;
+    --gradient-header: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+    --gradient-fab: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* P2-A: the app shell is fixed-height, so the page itself must never pan
+     sideways. `overflow-y: auto` on the layout's <main> computes overflow-x to
+     `auto` (CSS Overflow spec), which is exactly what let a horizontal swipe
+     scroll the whole page — pin overflow-x on the document and on #root, and
+     restrict the gesture to vertical panning. Any element wider than the
+     viewport is now clipped instead of dragging the page with it. */
+  html,
+  body,
+  #root {
+    overflow-x: hidden;
+    max-width: 100%;
+    touch-action: pan-y;
+  }
+
+  html.theme-anim,
+  html.theme-anim * {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
+  }
+
+  /* Mask the reflow that happens when switching language (RTL <-> LTR): the
+     direction flip is instant and cannot be transitioned, so we dip opacity
+     briefly instead of letting the layout jump visibly. */
+  html.lang-switching #root {
+    opacity: 0.35;
+    transition: opacity 0.12s ease-out;
+  }
+  html.lang-switching {
+    transition: opacity 0.12s ease-out;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
+  }
+}

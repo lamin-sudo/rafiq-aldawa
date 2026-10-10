@@ -1,0 +1,1374 @@
+{
+ "ActivityFeed.jsonc": {
+  "name": "ActivityFeed",
+  "type": "object",
+  "properties": {
+   "actor_name": {
+    "type": "string",
+    "title": "اسم القائم بالفعل"
+   },
+   "actor_id": {
+    "type": "string",
+    "title": "معرف القائم بالفعل"
+   },
+   "action": {
+    "type": "string",
+    "title": "الإجراء",
+    "enum": [
+     "dose_taken",
+     "dose_skipped",
+     "medication_added",
+     "vital_recorded",
+     "emergency_updated",
+     "member_invited"
+    ]
+   },
+   "target_name": {
+    "type": "string",
+    "title": "اسم الهدف"
+   },
+   "recipient_name": {
+    "type": "string",
+    "title": "اسم الشخص"
+   },
+   "icon": {
+    "type": "string",
+    "title": "الأيقونة",
+    "default": "activity"
+   }
+  },
+  "required": [
+   "action"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "user_condition": {
+     "role": "admin"
+    }
+   },
+   "delete": {
+    "user_condition": {
+     "role": "admin"
+    }
+   }
+  }
+ },
+ "AuditLog.jsonc": {
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+   "actor_id": {
+    "type": "string",
+    "title": "المستخدم"
+   },
+   "actor_email": {
+    "type": "string",
+    "title": "البريد"
+   },
+   "action": {
+    "type": "string",
+    "title": "الإجراء"
+   },
+   "target_type": {
+    "type": "string",
+    "title": "نوع الهدف"
+   },
+   "target_id": {
+    "type": "string",
+    "title": "معرف الهدف"
+   },
+   "target_name": {
+    "type": "string",
+    "title": "اسم الهدف"
+   },
+   "details": {
+    "type": "string",
+    "title": "التفاصيل"
+   }
+  },
+  "required": [
+   "action"
+  ],
+  "rls": {
+   "read": {
+    "user_condition": {
+     "role": "admin"
+    }
+   },
+   "create": {},
+   "update": {
+    "user_condition": {
+     "role": "admin"
+    }
+   },
+   "delete": {
+    "user_condition": {
+     "role": "admin"
+    }
+   }
+  }
+ },
+ "CareRecipient.jsonc": {
+  "name": "CareRecipient",
+  "type": "object",
+  "properties": {
+   "name": {
+    "type": "string",
+    "title": "الاسم"
+   },
+   "relationship": {
+    "type": "string",
+    "title": "صلة القرابة",
+    "enum": [
+     "self",
+     "parent",
+     "spouse",
+     "child",
+     "sibling",
+     "grandparent",
+     "other"
+    ],
+    "default": "self"
+   },
+   "date_of_birth": {
+    "type": "string",
+    "format": "date",
+    "title": "تاريخ الميلاد"
+   },
+   "gender": {
+    "type": "string",
+    "enum": [
+     "male",
+     "female",
+     "unspecified"
+    ],
+    "default": "unspecified"
+   },
+   "notes": {
+    "type": "string",
+    "title": "ملاحظات"
+   },
+   "photo_url": {
+    "type": "string",
+    "title": "الصورة"
+   },
+   "shared_with": {
+    "type": "array",
+    "items": {
+     "type": "string"
+    },
+    "title": "مشاركة مع",
+    "default": []
+   }
+  },
+  "required": [
+   "name"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "data.shared_with": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ },
+ "ChatMessage.jsonc": {
+  "name": "ChatMessage",
+  "type": "object",
+  "properties": {
+   "role": {
+    "type": "string",
+    "title": "الدور",
+    "enum": [
+     "user",
+     "assistant"
+    ]
+   },
+   "content": {
+    "type": "string",
+    "title": "المحتوى"
+   }
+  },
+  "required": [
+   "role",
+   "content"
+  ],
+  "rls": {
+   "read": {
+    "created_by_id": "{{user.id}}"
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "created_by_id": "{{user.id}}"
+   },
+   "delete": {
+    "created_by_id": "{{user.id}}"
+   }
+  }
+ },
+ "DoseLog.jsonc": {
+  "name": "DoseLog",
+  "type": "object",
+  "properties": {
+   "medication_id": {
+    "type": "string",
+    "title": "معرف الدواء"
+   },
+   "medication_name": {
+    "type": "string",
+    "title": "اسم الدواء"
+   },
+   "medication_dosage": {
+    "type": "string",
+    "title": "الجرعة"
+   },
+   "recipient_id": {
+    "type": "string",
+    "title": "الشخص"
+   },
+   "scheduled_time": {
+    "type": "string",
+    "title": "الوقت المجدول",
+    "description": "HH:MM"
+   },
+   "scheduled_date": {
+    "type": "string",
+    "format": "date",
+    "title": "التاريخ المجدول"
+   },
+   "status": {
+    "type": "string",
+    "title": "الحالة",
+    "enum": [
+     "pending",
+     "taken",
+     "skipped",
+     "missed"
+    ],
+    "default": "pending"
+   },
+   "taken_at": {
+    "type": "string",
+    "format": "date-time",
+    "title": "وقت الإ_taken"
+   },
+   "confirmed_by_id": {
+    "type": "string",
+    "title": "أكدها"
+   },
+   "confirmed_by_name": {
+    "type": "string",
+    "title": "اسم المؤكد"
+   },
+   "skip_reason": {
+    "type": "string",
+    "title": "سبب التخطي"
+   },
+   "decremented_inventory": {
+    "type": "boolean",
+    "title": "تم خصم المخزون",
+    "default": false
+   }
+  },
+  "required": [
+   "medication_id",
+   "recipient_id",
+   "scheduled_time",
+   "scheduled_date",
+   "status"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "data.confirmed_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ },
+ "EmergencyInfo.jsonc": {
+  "name": "EmergencyInfo",
+  "type": "object",
+  "properties": {
+   "blood_type": {
+    "type": "string",
+    "title": "زمرة الدم",
+    "enum": [
+     "A+",
+     "A-",
+     "B+",
+     "B-",
+     "AB+",
+     "AB-",
+     "O+",
+     "O-",
+     "unknown"
+    ],
+    "default": "unknown"
+   },
+   "chronic_diseases": {
+    "type": "string",
+    "title": "الأمراض المزمنة"
+   },
+   "allergies": {
+    "type": "string",
+    "title": "الحساسية"
+   },
+   "current_medications": {
+    "type": "string",
+    "title": "الأدوية الحالية"
+   },
+   "emergency_contact_name": {
+    "type": "string",
+    "title": "اسم جهة الاتصال"
+   },
+   "emergency_phone": {
+    "type": "string",
+    "title": "هاتف الطوارئ"
+   },
+   "recipient_id": {
+    "type": "string",
+    "title": "الشخص"
+   },
+   "recipient_name": {
+    "type": "string",
+    "title": "اسم الشخص"
+   }
+  },
+  "required": [
+   "recipient_id"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ },
+ "FamilyMember.jsonc": {
+  "name": "FamilyMember",
+  "type": "object",
+  "properties": {
+   "invited_email": {
+    "type": "string",
+    "format": "email",
+    "title": "البريد الإلكتروني"
+   },
+   "invitee_id": {
+    "type": "string",
+    "title": "معرف المدعو"
+   },
+   "invitee_name": {
+    "type": "string",
+    "title": "اسم المدعو"
+   },
+   "relationship": {
+    "type": "string",
+    "title": "صلة القرابة"
+   },
+   "permission_level": {
+    "type": "string",
+    "title": "مستوى الصلاحية",
+    "enum": [
+     "view_only",
+     "view_and_confirm",
+     "manage"
+    ],
+    "default": "view_only"
+   },
+   "status": {
+    "type": "string",
+    "title": "الحالة",
+    "enum": [
+     "pending",
+     "active",
+     "revoked"
+    ],
+    "default": "pending"
+   },
+   "recipient_id": {
+    "type": "string",
+    "title": "الشخص المشترك"
+   },
+   "recipient_name": {
+    "type": "string",
+    "title": "اسم الشخص"
+   }
+  },
+  "required": [
+   "invited_email",
+   "recipient_id",
+   "permission_level"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "data.invitee_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "data.invitee_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ },
+ "FeatureRequest.jsonc": {
+  "name": "FeatureRequest",
+  "type": "object",
+  "properties": {
+   "category": {
+    "type": "string",
+    "title": "الفئة",
+    "enum": [
+     "bug",
+     "feature",
+     "improvement"
+    ]
+   },
+   "description": {
+    "type": "string",
+    "title": "الوصف"
+   },
+   "contact_email": {
+    "type": "string",
+    "title": "البريد للتواصل"
+   },
+   "status": {
+    "type": "string",
+    "title": "الحالة",
+    "enum": [
+     "new",
+     "seen",
+     "done"
+    ],
+    "default": "new"
+   }
+  },
+  "required": [
+   "category",
+   "description"
+  ],
+  "rls": {
+   "read": {
+    "created_by_id": "{{user.id}}"
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "created_by_id": "{{user.id}}"
+   },
+   "delete": {
+    "created_by_id": "{{user.id}}"
+   }
+  }
+ },
+ "Medication.jsonc": {
+  "name": "Medication",
+  "type": "object",
+  "properties": {
+   "name": {
+    "type": "string",
+    "title": "اسم الدواء"
+   },
+   "generic_name": {
+    "type": "string",
+    "title": "الاسم العلمي"
+   },
+   "dosage": {
+    "type": "string",
+    "title": "الجرعة",
+    "description": "مقدار الجرعة الواحدة"
+   },
+   "dosage_unit": {
+    "type": "string",
+    "title": "وحدة الجرعة",
+    "enum": [
+     "حبة",
+     "ملغ",
+     "مل",
+     "قطرة",
+     "بخة",
+     "حقنة",
+     "أخرى"
+    ],
+    "default": "حبة"
+   },
+   "form": {
+    "type": "string",
+    "title": "شكل الدواء",
+    "enum": [
+     "أقراص",
+     "كبسولات",
+     "شراب",
+     "حقن",
+     "كريم",
+     "قطرة",
+     "بخاخ",
+     "أخرى"
+    ],
+    "default": "أقراص"
+   },
+   "frequency_per_day": {
+    "type": "number",
+    "title": "عدد المرات يوميًا",
+    "minimum": 1,
+    "maximum": 12,
+    "default": 1
+   },
+   "scheduled_times": {
+    "type": "array",
+    "items": {
+     "type": "string"
+    },
+    "title": "أوقات الجرعات",
+    "default": [],
+    "description": "قائمة أوقات بصيغة HH:MM"
+   },
+   "start_date": {
+    "type": "string",
+    "format": "date",
+    "title": "تاريخ البداية"
+   },
+   "end_date": {
+    "type": "string",
+    "format": "date",
+    "title": "تاريخ النهاية"
+   },
+   "instructions": {
+    "type": "string",
+    "title": "تعليمات الاستخدام"
+   },
+   "notes": {
+    "type": "string",
+    "title": "ملاحظات"
+   },
+   "quantity": {
+    "type": "number",
+    "title": "الكمية الكلية",
+    "minimum": 0,
+    "default": 0
+   },
+   "remaining_quantity": {
+    "type": "number",
+    "title": "الكمية المتبقية",
+    "minimum": 0,
+    "default": 0
+   },
+   "refill_threshold": {
+    "type": "number",
+    "title": "حد إعادة التعبئة",
+    "minimum": 0,
+    "default": 5
+   },
+   "active": {
+    "type": "boolean",
+    "title": "نشط",
+    "default": true
+   },
+   "recipient_id": {
+    "type": "string",
+    "title": "الشخص المرافق"
+   },
+   "recipient_name": {
+    "type": "string",
+    "title": "اسم الشخص"
+   },
+   "color": {
+    "type": "string",
+    "title": "لون مميز",
+    "default": "teal"
+   },
+   "shared_with": {
+    "type": "array",
+    "items": {
+     "type": "string"
+    },
+    "title": "مشاركة مع",
+    "default": []
+   },
+   "calendar_event_ids": {
+    "type": "array",
+    "items": {
+     "type": "string"
+    },
+    "title": "معرّفات أحداث التقويم",
+    "default": [],
+    "description": "معرّفات أحداث Google Calendar المرتبطة بجرعات هذا الدواء"
+   }
+  },
+  "required": [
+   "name",
+   "dosage",
+   "frequency_per_day",
+   "start_date",
+   "recipient_id"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "data.shared_with": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ },
+ "Notification.jsonc": {
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+   "type": {
+    "type": "string",
+    "title": "النوع",
+    "enum": [
+     "dose_due",
+     "dose_overdue",
+     "low_stock",
+     "refill_reminder",
+     "family_activity",
+     "system"
+    ]
+   },
+   "title": {
+    "type": "string",
+    "title": "العنوان"
+   },
+   "message": {
+    "type": "string",
+    "title": "الرسالة"
+   },
+   "is_read": {
+    "type": "boolean",
+    "title": "مقروءة",
+    "default": false
+   },
+   "related_id": {
+    "type": "string",
+    "title": "معرف مرتبط"
+   },
+   "related_type": {
+    "type": "string",
+    "title": "نوع مرتبط"
+   }
+  },
+  "required": [
+   "type",
+   "title",
+   "message"
+  ],
+  "rls": {
+   "read": {
+    "created_by_id": "{{user.id}}"
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "created_by_id": "{{user.id}}"
+   },
+   "delete": {
+    "created_by_id": "{{user.id}}"
+   }
+  }
+ },
+ "NotificationLog.jsonc": {
+  "name": "NotificationLog",
+  "type": "object",
+  "properties": {
+   "type": {
+    "type": "string",
+    "title": "النوع",
+    "enum": [
+     "dose_due",
+     "dose_overdue",
+     "low_stock",
+     "refill_reminder",
+     "family_activity",
+     "system"
+    ],
+    "default": "dose_due"
+   },
+   "title": {
+    "type": "string",
+    "title": "العنوان"
+   },
+   "body": {
+    "type": "string",
+    "title": "النص"
+   },
+   "medication_id": {
+    "type": "string",
+    "title": "معرف الدواء"
+   },
+   "medication_name": {
+    "type": "string",
+    "title": "اسم الدواء"
+   },
+   "scheduled_time": {
+    "type": "string",
+    "title": "الوقت المجدول"
+   },
+   "was_snoozed": {
+    "type": "boolean",
+    "title": "تم التأجيل",
+    "default": false
+   },
+   "snoozed_until": {
+    "type": "string",
+    "format": "date-time",
+    "title": "مؤجل حتى"
+   },
+   "suppressed_by_quiet_hours": {
+    "type": "boolean",
+    "title": "كتم بسبب عدم الإزعاج",
+    "default": false
+   }
+  },
+  "required": [
+   "type",
+   "title"
+  ],
+  "rls": {
+   "read": {
+    "created_by_id": "{{user.id}}"
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "created_by_id": "{{user.id}}"
+   },
+   "delete": {
+    "created_by_id": "{{user.id}}"
+   }
+  }
+ },
+ "NotificationSettings.jsonc": {
+  "name": "NotificationSettings",
+  "type": "object",
+  "properties": {
+   "dose_reminders": {
+    "type": "boolean",
+    "title": "تنبيهات الجرعات",
+    "default": true
+   },
+   "missed_dose_reminders": {
+    "type": "boolean",
+    "title": "تذكير الجرعات الفائتة",
+    "default": true
+   },
+   "low_stock_alerts": {
+    "type": "boolean",
+    "title": "تنبيه نفاد المخزون",
+    "default": true
+   },
+   "family_notifications": {
+    "type": "boolean",
+    "title": "إشعارات العائلة",
+    "default": true
+   },
+   "daily_summary": {
+    "type": "boolean",
+    "title": "الملخص اليومي",
+    "default": false
+   },
+   "notification_sound": {
+    "type": "boolean",
+    "title": "صوت التنبيه",
+    "default": true
+   },
+   "reminder_lead_minutes": {
+    "type": "number",
+    "title": "دقائق قبل الموعد",
+    "default": 0,
+    "minimum": 0,
+    "maximum": 60
+   },
+   "missed_dose_delay_minutes": {
+    "type": "number",
+    "title": "دقائق تأخير تذكير الجرعة الفائتة",
+    "default": 30,
+    "minimum": 5,
+    "maximum": 120
+   },
+   "quiet_hours_enabled": {
+    "type": "boolean",
+    "title": "تفعيل عدم الإزعاج",
+    "default": false
+   },
+   "quiet_hours_start": {
+    "type": "string",
+    "title": "بداية عدم الإزعاج",
+    "description": "HH:MM",
+    "default": "22:00"
+   },
+   "quiet_hours_end": {
+    "type": "string",
+    "title": "نهاية عدم الإزعاج",
+    "description": "HH:MM",
+    "default": "07:00"
+   }
+  },
+  "rls": {
+   "read": {
+    "created_by_id": "{{user.id}}"
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "created_by_id": "{{user.id}}"
+   },
+   "delete": {
+    "created_by_id": "{{user.id}}"
+   }
+  },
+  "required": []
+ },
+ "PillScan.jsonc": {
+  "name": "PillScan",
+  "type": "object",
+  "properties": {
+   "image_url": {
+    "type": "string",
+    "title": "الصورة"
+   },
+   "recipient_id": {
+    "type": "string",
+    "title": "الشخص"
+   },
+   "recipient_name": {
+    "type": "string",
+    "title": "اسم الشخص"
+   },
+   "shape": {
+    "type": "string",
+    "title": "الشكل"
+   },
+   "color": {
+    "type": "string",
+    "title": "اللون"
+   },
+   "imprint": {
+    "type": "string",
+    "title": "النقش"
+   },
+   "confidence": {
+    "type": "string",
+    "title": "الثقة",
+    "enum": [
+     "high",
+     "medium",
+     "low"
+    ],
+    "default": "low"
+   },
+   "possible_matches": {
+    "type": "array",
+    "title": "الاحتمالات",
+    "default": [],
+    "items": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": "string"
+      },
+      "confidence": {
+       "type": "number"
+      },
+      "reason": {
+       "type": "string"
+      }
+     }
+    }
+   },
+   "notes": {
+    "type": "string",
+    "title": "ملاحظات"
+   }
+  },
+  "required": [
+   "image_url"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ },
+ "ScanHistory.jsonc": {
+  "name": "ScanHistory",
+  "type": "object",
+  "properties": {
+   "barcode": {
+    "type": "string",
+    "title": "الباركود"
+   },
+   "detection_method": {
+    "type": "string",
+    "title": "طريقة القراءة",
+    "enum": [
+     "barcode_detector",
+     "image_scan",
+     "manual"
+    ],
+    "default": "barcode_detector"
+   },
+   "found": {
+    "type": "boolean",
+    "title": "تم العثور على المنتج",
+    "default": false
+   },
+   "product_kind": {
+    "type": "string",
+    "title": "نوع المنتج",
+    "enum": [
+     "medicine",
+     "other",
+     "unknown"
+    ],
+    "default": "unknown"
+   },
+   "product_name": {
+    "type": "string",
+    "title": "اسم المنتج"
+   },
+   "manufacturer": {
+    "type": "string",
+    "title": "الشركة المصنعة"
+   },
+   "api_source": {
+    "type": "string",
+    "title": "مصدر البيانات"
+   },
+   "recipient_id": {
+    "type": "string",
+    "title": "الشخص"
+   },
+   "notes": {
+    "type": "string",
+    "title": "ملاحظات"
+   }
+  },
+  "required": [
+   "barcode"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ },
+ "User.jsonc": {
+  "name": "User",
+  "type": "object",
+  "properties": {
+   "role": {
+    "type": "string",
+    "description": "The role of the user in the app",
+    "enum": [
+     "admin",
+     "user"
+    ]
+   },
+   "app_lock_enabled": {
+    "type": "boolean",
+    "title": "تفعيل قفل التطبيق",
+    "default": false
+   },
+   "app_lock_pin_hash": {
+    "type": "string",
+    "title": "بصمة رمز القفل"
+   },
+   "app_lock_pin_salt": {
+    "type": "string",
+    "title": "ملح التشفير"
+   },
+   "app_lock_timeout_minutes": {
+    "type": "number",
+    "title": "مهلة القفل التلقائي بالدقائق",
+    "default": 5
+   },
+   "biometric_enabled": {
+    "type": "boolean",
+    "title": "استخدام البصمة",
+    "default": false
+   }
+  },
+  "required": [
+   "role"
+  ]
+ },
+ "VitalSigns.jsonc": {
+  "name": "VitalSigns",
+  "type": "object",
+  "properties": {
+   "recipient_id": {
+    "type": "string",
+    "title": "الشخص"
+   },
+   "recipient_name": {
+    "type": "string",
+    "title": "اسم الشخص"
+   },
+   "type": {
+    "type": "string",
+    "title": "النوع",
+    "enum": [
+     "blood_pressure",
+     "blood_sugar",
+     "weight"
+    ],
+    "default": "blood_pressure"
+   },
+   "systolic": {
+    "type": "number",
+    "title": "الانقباضي",
+    "minimum": 0,
+    "maximum": 300
+   },
+   "diastolic": {
+    "type": "number",
+    "title": "الانبساطي",
+    "minimum": 0,
+    "maximum": 200
+   },
+   "value": {
+    "type": "number",
+    "title": "القيمة",
+    "minimum": 0,
+    "maximum": 1000
+   },
+   "weight": {
+    "type": "number",
+    "title": "الوزن",
+    "minimum": 0,
+    "maximum": 500
+   },
+   "recorded_at": {
+    "type": "string",
+    "format": "date-time",
+    "title": "وقت التسجيل"
+   },
+   "notes": {
+    "type": "string",
+    "title": "ملاحظات"
+   }
+  },
+  "required": [
+   "recipient_id",
+   "type",
+   "recorded_at"
+  ],
+  "rls": {
+   "read": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "create": {
+    "created_by_id": "{{user.id}}"
+   },
+   "update": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "$or": [
+     {
+      "created_by_id": "{{user.id}}"
+     },
+     {
+      "user_condition": {
+       "role": "admin"
+      }
+     }
+    ]
+   }
+  }
+ }
+}
